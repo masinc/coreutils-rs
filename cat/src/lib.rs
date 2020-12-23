@@ -11,19 +11,19 @@ pub enum Input {
 }
 
 #[derive(Clone, Hash, PartialEq, Eq)]
-pub struct FileContent {
+pub struct InputContent {
     input: Input,
 }
 
-impl FileContent {
+impl InputContent {
     pub fn from_file_name(file_name: impl Into<String>) -> Self {
-        FileContent {
+        InputContent {
             input: Input::File(file_name.into()),
         }
     }
 
     pub fn from_stdin() -> Self {
-        FileContent {
+        InputContent {
             input: Input::Stdin,
         }
     }
@@ -50,9 +50,9 @@ impl FileContent {
     }
 }
 
-impl fmt::Debug for FileContent {
+impl fmt::Debug for InputContent {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct(stringify!(FileContent))
+        f.debug_struct(stringify!(InputContent))
             .field("input", &self.input)
             .finish()
     }
@@ -64,22 +64,22 @@ mod tests {
 
     #[test]
     fn test_file_name() {
-        let fc = FileContent::from_file_name(".gitignore");
+        let fc = InputContent::from_file_name(".gitignore");
         assert_eq!(fc.file_name(), Some(".gitignore"));
 
-        let fc = FileContent::from_stdin();
+        let fc = InputContent::from_stdin();
         assert_eq!(fc.file_name(), None);
     }
 
     #[test]
     fn test_debug() {
-        let fc = FileContent::from_file_name(".gitignore");
+        let fc = InputContent::from_file_name(".gitignore");
         assert_eq!(
             format!("{:?}", fc),
-            "FileContent { input: File(\".gitignore\") }"
+            "InputContent { input: File(\".gitignore\") }"
         );
 
-        let fc = FileContent::from_stdin();
-        assert_eq!(format!("{:?}", fc), "FileContent { input: Stdin }");
+        let fc = InputContent::from_stdin();
+        assert_eq!(format!("{:?}", fc), "InputContent { input: Stdin }");
     }
 }
